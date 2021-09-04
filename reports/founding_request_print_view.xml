@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id="founding_request_print_view">
+			<t t-call="web.basic_layout">
+				<t t-foreach="docs" t-as="o">
+					<!--<div class="footer">
+						<ul class="list-inline text-center">
+							<li>Página:</li>
+							<li><span class="page"/></li>
+							<li>/</li>
+							<li><span class="topage"/></li>
+						</ul>
+					</div>-->
+					<div class="header">
+						<table style="width:100%;">
+            				<tr>
+              					<td style="width:25%;">
+                					<div style="width: 55%;float: left;">
+    									<img src='/web/binary/company_logo' style="width:100%"/>
+									</div>
+              					</td>
+								<td style="width:50%;">
+									<table style="width:100%;">
+            							<tr>
+              								<td class="text-center" style="width:100%;">
+											  <h3><strong>GEOTECNICA SOLUCIONES</strong></h3>
+											  <h6><strong>DEPARTAMENTO DE EJECUCION DE PROYECTOS</strong></h6>
+											  <h6><strong>SOLICITUD DE FONDOS</strong></h6>
+              								</td>
+            							</tr>
+									</table>
+								</td>
+								<td style="width:25%;">
+									<table style="width:100%;">
+            							<tr>
+              								<td class="text-right" style="width:100%;">
+												<p style="font-size:10px;" class="text-right">
+													<strong>CO-FO-02</strong>
+													<br/>
+													<strong>EJP-SLF-002</strong>
+													<br/>
+												</p>
+              								</td>
+            							</tr>
+									</table>
+								</td>
+            				</tr>
+						</table>
+						
+					</div>
+					<div class="page">
+						<!--<h2 class="text-center"><strong>Solicitud de fondos</strong></h2>-->
+						<br/>
+						<h2 class="text-left"><strong><span t-field="o.sequence"/> </strong></h2>
+						<table style="width:100%;">
+							<tr>
+								<td style="width:50%;">
+									<strong>Fecha de solicitud: </strong><span t-field="o.name"/>  
+								</td>
+								<td style="width:50%;">
+									<strong>Elemento PEP: </strong><span t-field="o.ped_element"/> 
+								</td>
+							</tr>
+							<tr >
+								<td style="width:50%;">
+									<strong>Semana de ejecución: </strong><span t-field="o.execution_week"/>  
+								</td>
+								<td style="width:50%;">
+									<strong>Proyecto: </strong><span t-field="o.project_id.name"/>  
+								</td>
+							</tr>
+							<tr >
+								<td style="width:50%;">
+									<strong>Fecha de inicio semana: </strong><span t-field="o.date_to"/>  
+								</td>
+								<td style="width:50%;">
+									<strong>Fecha final semana: </strong><span t-field="o.date_from"/>  
+								</td>
+							</tr>
+							<tr >
+								<td style="width:50%;">
+									<strong>Cliente: </strong><span t-field="o.client.name"/>  
+								</td>
+								<td style="width:50%;">
+									<strong>Solicitante: </strong><span t-field="o.responsable_id.name"/>   
+								</td>
+							</tr>
+							<tr >
+								<td style="width:50%;">
+									<strong>Responsable del proyecto: </strong><span t-field="o.project_manager.name"/>   
+								</td>
+								<td style="width:50%;">
+									<strong>Total: </strong><span>L. </span><t t-esc="'{:20,.2f}'.format(o.total)"/> 
+								</td>
+							</tr>
+						</table>
+	
+						<div>
+							<br/>
+							<t t-set="total_fondo" t-value="0"/>
+							<t t-set="total_presupuestado" t-value="0"/>
+							<t t-set="total_ejecutado" t-value="0"/>
+							<t t-set="category" t-value="0"/>
+							
+							<table class="table table-condensed" style="font-size:12px;border:1px solid black;">
+								<thead style="background:#ff5c33;color:#FFFFFF;">
+									<tr style="font-size:12px;">
+										<th class="text-center" style="width:15%;border:1px solid black;">Categoria</th>
+										<th class="text-center" style="width:20%;border:1px solid black;">Descripción</th>
+										<th class="text-center" style="width:15%;border:1px solid black;">Monto presupuestado</th>
+										<th class="text-center" style="width:15%;border:1px solid black;">Monto ejecutado</th>
+										<th class="text-center" style="width:15%;border:1px solid black;">Fondo requerido</th>
+										<th class="text-center" style="width:20%;border:1px solid black;">Descripción utilización de fondos</th>
+									</tr>
+								</thead>
+								<tbody class="invoice_tbody" style="font-size:12px;">
+									<t t-foreach="o.bim_finance_founding_request_detail_ids" t-as="l">
+										<t t-if="l.invisible == False">
+											<t t-if="category != l.category_id.id">
+											
+												<tr>
+													<td class="text-left" colspan="6" style="border:1px solid black;font-size:25px;">
+														<strong><span t-field="l.category_id.name"/></strong>
+													</td>
+												</tr>
+
+												<tr>
+													<td class="text-left" style="border:1px solid black;">
+														
+													</td>
+
+													<td class="text-left" style="border:1px solid black;">
+														<span t-field="l.element_id.name"/>
+													</td>
+													<td class="text-right" style="border:1px solid black;">
+														<span>L. </span><t t-esc="'{:20,.2f}'.format(l.budgeted_amount)"/>
+													</td>
+													<t t-set="total_presupuestado" t-value="total_presupuestado + l.budgeted_amount"/>
+													
+													<td class="text-right" style="border:1px solid black;">
+														 <span>L. </span><t t-esc="'{:20,.2f}'.format(l.amount_executed)"/>
+													</td>
+													<t t-set="total_ejecutado" t-value="total_ejecutado+l.amount_executed"/>
+													<td 
+														class="text-right" 
+														style="border:1px solid black;"
+													>
+														<span>L. </span><t t-esc="'{:20,.2f}'.format(l.required_founding)"/>
+													</td>
+
+													<td 
+														class="text-left" 
+														style="border:1px solid black;"
+													>
+														<span t-field="l.descripcion"/>
+													</td>
+												</tr>
+													
+											</t>
+
+											<t t-if="category == l.category_id.id">
+												<t t-if="l.invisible == False">
+													<tr>
+														<td class="text-left" style="border:1px solid black;">
+															
+														</td>
+
+														<td class="text-left" style="border:1px solid black;">
+															<span t-field="l.element_id.name"/>
+														</td>
+														<td class="text-right" style="border:1px solid black;">
+															<span>L. </span><t t-esc="'{:20,.2f}'.format(l.budgeted_amount)"/>
+														</td>
+														<t t-set="total_presupuestado" t-value="total_presupuestado + l.budgeted_amount"/>
+														<td class="text-right" style="border:1px solid black;">
+															<span>L. </span><t t-esc="'{:20,.2f}'.format(l.amount_executed)"/>
+														</td>
+														<t t-set="total_ejecutado" t-value="total_ejecutado+l.amount_executed"/>
+														<td 
+															class="text-right" 
+															style="border:1px solid black;"
+														>
+															<span>L. </span><t t-esc="'{:20,.2f}'.format(l.required_founding)"/>
+														</td>
+
+														<td 
+															class="text-left" 
+															style="border:1px solid black;"
+														>
+															<span t-field="l.descripcion"/>
+														</td>
+													</tr>
+													
+												</t>
+											</t>
+
+											<t t-set="category" t-value="l.category_id.id"/>
+										</t>
+										
+										<t t-set="total_fondo" t-value="total_fondo + l.required_founding"/>
+									</t>
+								</tbody>
+							</table>
+					
+							<table class="table table-condensed">
+								<tbody class="invoice_tbody" style="font-size:12px;">
+									<tr >
+										<td  style="width:15%;">
+											<strong>Total</strong>
+										</td>
+										<td  style="width:20%;">
+										</td>
+										<td 
+											class="text-right"  
+											style="width:15%;"
+										>
+											<strong>
+												<span>L. </span><t t-esc="'{:20,.2f}'.format(total_presupuestado)"/>
+											</strong>
+										</td>
+										<td 
+											class="text-right"  
+											style="width:15%;"
+										>
+											<strong>
+												<span>L. </span><t t-esc="'{:20,.2f}'.format(total_ejecutado)"/>
+											</strong>
+										</td>
+										<td 
+											class="text-right"  
+											style="width:15%;"
+										>
+											<strong>
+												<span>L. </span><t t-esc="'{:20,.2f}'.format(total_fondo)"/>
+											</strong>
+										</td>
+										<td  style="width:20%;">
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div> 
+
+					<div class="footer">
+      					<table style="width:100%;">
+						  	<tr>
+					       		<td 
+									style="width:33.33%;"
+									class="text-center"
+								>
+									<strong>
+								  		<span t-field="o.responsable_id.name"/>
+									</strong>
+								</td>
+
+								<td 
+									style="width:33.33%;"
+									class="text-center"
+								>
+									<strong>
+										<span t-field="o.aprob_gerencia.name"/>
+									</strong>
+								</td>
+
+								<td 
+									style="width:33.33%;"
+									class="text-center"
+								>
+									<strong>
+										<span t-field="o.aprob_financiera.name"/>
+									</strong>
+								</td>
+							</tr>
+							<tr>
+					       		<td 
+									style="width:33.33%;"
+									class="text-center"
+								>
+								  Solicitante
+								</td>
+
+								<td 
+									style="width:33.33%;"
+									class="text-center"
+								>
+								  Aprobación gerencia
+								</td>
+
+								<td 
+									style="width:33.33%;"
+									class="text-center"
+								>
+								  Aprobación financiera
+								</td>
+								
+					       	</tr>
+      					</table>
+						<table style="width:100%;">
+						  	<tr>
+							  	<br/>
+							  	<p style="font-size:10px">
+								  Por este mismo medio yo (El usuario Peticionario) AUTORIZO que sea descontado de mis percepciones via nomina el importe de los saldos de esta 
+									solicitud de fondos en caso de no presentar la documentación comprobatoria de conformidad con lo señalado en el manual correspondiente y en un 
+									término de tres días hábiles posteriores a la conclusión de estos fondos.
+								</p>
+							  
+							</tr>
+						</table>
+    				</div>
+				</t>
+			</t>
+		</template>
+	</data>
+</odoo>

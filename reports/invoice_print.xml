@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="invoice_print"
+            model="account.move"
+            string="Factura Geotecnica"
+            name="bim_finance.invoice_print_view"
+            file="bim_finance.invoice_print_view"
+            report_type="qweb-pdf"
+        />
+
+    </data>
+</odoo>
+

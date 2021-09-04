@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+  <data>
+
+    <!--menu configuracion contactos-->
+    <menuitem 
+      id="contacts_departments_menu"
+      name="Departamentos"
+      parent="contacts.res_partner_menu_config"
+      sequence="100"
+      action="departments_action"
+      groups="crm_update.group_departments_menu"
+    />
+    <menuitem 
+        id="contacts_references"
+        name="Referencias"
+        parent="contacts.res_partner_menu_config"
+        sequence="101"
+        action="references_action"
+        groups="crm_update.group_references_menu"
+    />
+    <!--menu configuracion contactos-->
+  </data>
+</odoo>

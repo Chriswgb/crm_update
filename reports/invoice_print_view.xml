@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id="invoice_print_view">
+			<t t-call="web.basic_layout">
+				<t t-foreach="docs" t-as="o">
+					<!--<div class="footer">
+						<ul class="list-inline text-center">
+							<li>Página:</li>
+							<li><span class="page"/></li>
+							<li>/</li>
+							<li><span class="topage"/></li>
+						</ul>
+					</div>-->
+
+					<div 
+						class="page" 
+						style="margin-top: 0px;position:relative"
+					>
+						
+						
+						<div 
+							style=" opacity: 0.1;color: BLACK;position: absolute;top: 45%;width:100%;z-index:999"
+						>
+							<img 
+								t-att-src="image_data_uri(o.company_id.logo)" 
+								style="width:100%;max-width:350px;display:block;margin:0px auto;"
+							/>
+						</div>
+
+						<!--<div style="position:absolute;top:45%;opacity: 0.5;color: BLACK;z-index:999;width:100%;">
+                			<img 
+								t-att-src="image_data_uri(o.company_id.logo)" 
+								style="width:100%;max-width:350px;display:block;margin:0px auto;"
+							/>
+            			</div>-->
+						
+						<table 
+							style="width:100%;"
+							class="body"
+						>
+            				<tr>
+
+              					<td 
+								  	width="33.33%"
+									align="left"
+									style="vertical-align:top;position: relative;"
+								>
+                					<img 
+										t-if="o.company_id.logo" 
+										t-att-src="image_data_uri(o.company_id.logo)" 
+										class="float-left" 
+										lt="Logo" 
+										style="max-width: 170px;width: 170%;display:inline-block"
+									/>
+              					</td>
+								<td 
+									width="33.33%"
+									align="left" 
+									style="text-left: right;vertical-align: top"
+								>
+									<table style="width:100%;">
+            							<tr>
+              								<td>
+												<h5><strong>Geo Structures S.A de C.V.</strong></h5>
+											  	<h6>R.T.N. <span t-field="o.company_id.vat"/></h6>
+											  	<h6><span t-field="o.company_id.street"/></h6>
+												<h6><span t-field="o.company_id.city"/> | <span t-field="o.company_id.country_id.name"/></h6>
+												<h6><span t-field="o.company_id.website"/></h6>
+              								</td>
+            							</tr>
+									</table>
+								</td>
+								<td 
+									width="2%"
+									align="left" 
+									style="text-left: right;vertical-align: top"
+								>
+									
+								</td>
+								<td width="31.33%">
+									<table 
+										width="100%"
+										align="right" 
+										style="margin-top: -3px;"
+									>
+            							<tr>
+              								<td>
+												<h5><strong>FACTURA</strong></h5>
+												<h6><span t-field="o.name"/></h6>
+												<br/>
+												<h6>Fecha de Factura: <span t-field="o.invoice_date"/></h6>
+												<h6>CAI: <span t-field="o.cai_shot"/></h6>
+              								</td>
+            							</tr>
+									</table>
+								</td>
+            				</tr>
+						</table>
+						<br/>
+						<br/> 						
+						<h6><strong>CLIENTE</strong></h6>
+						<hr style="height:1px;border:none;color:#333;background-color:#333;"/>
+
+						<table style="width:100%;">
+            				<tr>
+              					<td style="width:48%;">
+                					<h6><strong><span t-field="o.partner_id.name"/></strong></h6>
+									<br/>
+									<h6>R.T.N. <span t-field="o.partner_id.vat"/></h6>
+              					</td>
+
+								<td style="width:4%;">
+									
+								</td>
+						
+								<td style="width:48%;">
+									<h6>Proyecto: <span t-field="o.proyecto_id.name"/></h6>
+									<h6>Fecha vencimiento: <span t-field="o.invoice_date_due"/></h6>
+								</td>
+            				</tr>
+						</table>
+
+						<br/>
+						<br/>
+						<table style="width:100%;">
+							<tr>
+								<td style="width:5%;">
+								<strong>#</strong>
+								</td>
+								<td style="width:60%;">
+									<strong>Descripción</strong>
+								</td>
+								<td style="width:10%;">
+									<strong>Cantidad</strong>
+								</td>
+								<td style="width:10%;">
+									<strong>Precio U</strong>
+								</td>
+								<td 
+									class="text-right"
+									style="width:15%;"
+								>
+									<strong>Precio Total</strong>
+								</td>
+							</tr>
+						</table>
+						<hr style="height:2px;border:none;color:#333;background-color:#333;"/>
+
+						<t t-set="sub_total" t-value="0"/>
+						<t t-set="descuento" t-value="0"/>
+						<t t-set="exento" t-value="0"/>
+						<table style="width:100%;">
+							<t t-foreach="o.invoice_line_ids" t-as="l">
+								<t t-set="total_line" t-value="0"/>
+								<t t-set="impuesto" t-value="0"/>
+								<tr>
+									<td 
+										class="text-left"
+										style="width:5%;font-size:12px;"
+									>
+										<span t-esc="l_index + 1" />
+									</td>
+								<td 
+									class="text-left"
+									style="width:60%;font-size:12px;"
+								>
+									<span t-field="l.product_id.name"/>
+								</td>
+								<td 
+									class="text-center"
+									style="width:10%;font-size:12px;"
+								>
+									<span t-field="l.quantity"/>
+								</td>
+								<td 
+									class="text-center"
+									style="width:10%;font-size:12px;"
+								>
+									L <span t-field="l.price_unit"/>
+								</td>
+
+								<t
+									t-set="total_line" 
+									t-value="l.quantity*l.price_unit"
+								/>
+
+								<t
+									t-set="sub_total" 
+									t-value="sub_total + total_line"
+								/>
+
+								<t
+									t-set="descuento" 
+									t-value="descuento + (total_line*(l.discount/100))"
+								/>
+
+								<t t-foreach="l.tax_ids" t-as="l2">
+									<t
+										t-set="impuesto" 
+										t-value="impuesto + l2.amount"
+									/>
+								</t>
+
+								<t 
+									t-if="impuesto == 0" 
+									t-set="exento" 
+									t-value="exento + total_line"
+								/>
+								
+								
+								<td 
+									class="text-right"
+									style="width:15%;font-size:12px;"
+								>
+									L <t t-esc="'{:20,.2f}'.format(total_line)"/>
+								</td>
+								</tr>
+							</t>
+						</table>
+						<br/>
+						<!--<div 
+							style=" opacity: 0.5;color: BLACK;position: fixed;top: auto;right: 40%;"
+						>
+							<img src='/web/binary/company_logo' style="width:70%"/>
+						</div>-->
+
+						<hr style="height:2px;border:none;color:#333;background-color:#333;"/>
+
+						
+
+						<div class="row justify-content-end">
+							<div class="col-4">
+								<table style="width:100%;">
+									<tr>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											Subtotal
+										</td>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											L <t t-esc="'{:20,.2f}'.format(sub_total)"/>
+										</td>
+									</tr>
+
+									<tr>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											Descuento y Rebajas Otorgadas
+										</td>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											L <t t-esc="'{:20,.2f}'.format(descuento)"/>
+										</td>
+									</tr>
+
+									<tr>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											Importe Exento
+										</td>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											L <t t-esc="'{:20,.2f}'.format(exento)"/>
+										</td>
+									</tr>
+
+									<tr>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											Importe Gravado 15%
+										</td>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											L <t t-esc="'{:20,.2f}'.format(o.amount_untaxed-exento)"/>
+										</td>
+									</tr>
+
+									<tr>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											Importe Gravado 18%
+										</td>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											L 0.00
+										</td>
+									</tr>
+
+									<tr>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											ISV 15%
+										</td>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											L <t t-esc="'{:20,.2f}'.format(o.amount_tax)"/>
+										</td>
+									</tr>
+
+									<tr>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											ISV 18%
+										</td>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											L 0.00
+										</td>
+									</tr>
+
+									<tr>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											<strong>Total</strong>
+										</td>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											L <t t-esc="'{:20,.2f}'.format(o.amount_total)"/>
+										</td>
+									</tr>
+
+									<tr>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											Tasa de Cambio
+										</td>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											L 0.00
+										</td>
+									</tr>
+
+									<tr>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											Total en
+										</td>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											$ 0.00
+										</td>
+									</tr>
+									<tr>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											<strong>Balance</strong>
+										</td>
+										<td 
+											class="text-right"
+											style="font-size:12px;"
+										>
+											L <t t-esc="'{:20,.2f}'.format(o.amount_total)"/>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					
+						<br/>
+						<table style="width:100%;">
+							<tr>
+								<td style="width:100%;border:1px solid black;">
+									<strong>SON:</strong> <span t-field="o.amount_total_text"/>
+								</td>
+							</tr>
+						</table>
+						<br/>
+						<p 
+							class="text-center"
+							style="font-size:12px;"
+						>
+							SE COBRARA EL 3% MENSUAL SI LA FACTURA NO ES CANCELADA DENTRO DE LAS CONDICIONES DE PAGO ESTABLECIDAS
+						</p>
+
+						<p style="font-size:12px;">
+							N Correlativo Orden de Compras Excenta <span t-field="o.correlative_of_purchase_order_exempt"/>
+							<br/>
+							N Correlativo Carnet Exonerado <span t-field="o.correlative_of_record_exonerated"/>
+							<br/>
+							N Registro S.A.G <span t-field="o.identifier_of_the_sag_record"/>
+							<br/>
+							<br/>
+							Fecha Limite de Emisión: <span t-field="o.cai_expires_shot"/>
+							<br/>
+							Rango autorizado: <span t-field="o.min_number_shot"/> al  <span t-field="o.max_number_shot"/>
+							<br/>
+							ORIGINAL: CLIENTE | COPIA : OBLIGADO TRIBUTARIO EMISOR | COPIA : CONTABILIDAD
+							<br/>
+							<br/>
+							LA FACTURA ES BENEFICIO DE TODOS, EXIJALA
+						</p>
+
+    				</div>
+				</t>
+			</t>
+		</template>
+	</data>
+</odoo>

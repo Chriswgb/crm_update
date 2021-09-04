@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+  <data>
+
+    <!--email activity email-->
+
+    <record model="ir.actions.act_window" id="mail_activity_action">
+      <field name="name">Actividades</field>
+      <field name="res_model">activities</field>
+      <field name="view_mode">tree,form</field>
+      <field name="domain"> [('res_id', '=', active_id),('mail_activity_type_id','=',1)]</field>
+    </record>
+
+    <!--email activity-->
+
+    <!--call activity-->
+    
+    <record model="ir.actions.act_window" id="mail_activity_call_action">
+      <field name="name">Actividades</field>
+      <field name="res_model">activities</field>
+      <field name="view_mode">tree,form</field>
+      <field name="domain"> [('res_id', '=', active_id),('mail_activity_type_id','=',2)]</field>
+    </record>
+
+    <!--call activity-->
+
+    <!--metting activity-->
+
+    <record model="ir.actions.act_window" id="mail_activity_metting_action">
+      <field name="name">Actividades</field>
+      <field name="res_model">activities</field>
+      <field name="view_mode">tree,form</field>
+      <field name="domain"> [('res_id', '=', active_id),('mail_activity_type_id','=',3)]</field>
+    </record>
+
+    <!--metting activity-->
+
+    <!--to do activity-->
+
+    <record model="ir.actions.act_window" id="mail_activity_to_do_action">
+      <field name="name">Actividades</field>
+      <field name="res_model">activities</field>
+      <field name="view_mode">tree,form</field>
+      <field name="domain"> [('res_id', '=', active_id),('mail_activity_type_id','=',4)]</field>
+    </record>
+
+    <!--to do activity-->
+
+    <record model="ir.ui.view" id="res_partner_inherit_view">
+      <field name="name">res_partner_inherit_view</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_partner_form"/>
+      <field name="arch" type="xml">
+
+        <field name="vat" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </field>
+
+        <field name="title" position="attributes">
+            <attribute name="invisible">1</attribute>
+        </field>
+
+        <label for="lang" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </label>
+
+        <button name="%(base.res_lang_act_window)d" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </button>
+
+        <field name="lang" position="attributes">
+            <attribute name="invisible">1</attribute>
+        </field>
+
+        <field name="website" position="attributes">
+            <attribute name="invisible">1</attribute>
+        </field>
+
+        <field name="category_id" position="attributes">
+            <attribute name="invisible">1</attribute>
+        </field>
+        
+        <field name="category_id" position="after">
+            <field name="references" options="{'no_create':True,'no_open':True}"/>
+        </field>
+
+        <field name="vat" position="after">
+          <field name="rtn"/>
+          
+          <!--<field 
+            name="stage_id"
+            required="1"
+            options="{'no_create':True,'no_open':True}"
+          />-->
+
+          <field 
+            name="department_id"
+            options="{'no_create':True,'no_open':True}"
+          />
+
+          <field 
+            name="municipality_id"
+            options="{'no_create':True,'no_open':True}"
+            domain="[('departments_id','=',department_id)]"
+          />
+        </field>
+
+        <div name="button_box" position="inside">
+          
+          <button 
+            class="oe_stat_button"
+            icon="fa-envelope"
+            type="action" 
+            name="%(mail_activity_action)d"
+          >
+            <div class="o_field_widget o_stat_info">
+              <span class="o_stat_value"><field name="email_count"/></span>
+              <span class="o_stat_text">Correo electrónico</span>
+            </div>
+          </button>
+
+          <button 
+            class="oe_stat_button"
+            icon="fa-phone"
+            type="action" 
+            name="%(mail_activity_call_action)d"
+          >
+            <div class="o_field_widget o_stat_info">
+              <span class="o_stat_value"><field name="call_count"/></span>
+              <span class="o_stat_text">Llamadas</span>
+            </div>
+          </button>
+
+          <button 
+            class="oe_stat_button"
+            icon="fa-users"
+            type="action" 
+            name="%(mail_activity_metting_action)d"
+          >
+            <div class="o_field_widget o_stat_info">
+              <span class="o_stat_value"><field name="metting_count"/></span>
+              <span class="o_stat_text">Reuniones</span>
+            </div>
+          </button>
+
+          <button 
+            class="oe_stat_button"
+            icon="fa-thumb-tack"
+            type="action" 
+            name="%(mail_activity_to_do_action)d"
+          >
+            <div class="o_field_widget o_stat_info">
+              <span class="o_stat_value"><field name="to_do_count"/></span>
+              <span class="o_stat_text">Por hacer</span>
+            </div>
+          </button>
+
+          
+
+        </div>
+        
+      </field>
+    </record>
+
+  </data>
+</odoo>

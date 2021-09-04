@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+    <report
+        id="founding_request_print"
+        model="bim.finance.founding.request"
+        string="Solicitud de fondos"
+        name="bim_finance.founding_request_print_view"
+        file="bim_finance.founding_request_print_view"
+        report_type="qweb-pdf"
+        menu="False" 
+    />
+
+    
+</data>
+</odoo>
+

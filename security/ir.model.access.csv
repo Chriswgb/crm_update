@@ -1,0 +1,12 @@
+model_id:id,group_id:id,id,name,perm_read,perm_write,perm_create,perm_unlink
+model_res_partner_stage,group_stage_id_manager,access_res_partner_stage_manager,res.partner.stage,1,1,1,1
+model_departments,base.group_partner_manager,access_departments_manager,departments,1,1,1,1
+model_departments,base.group_user,access_departments_user,departments,1,0,0,0
+model_municipalities,base.group_partner_manager,access_municipalities_manager,municipalities,1,1,1,1
+model_municipalities,base.group_user,access_municipalities_user,municipalities,1,0,0,0
+model_references,base.group_partner_manager,access_references_manager,references,1,1,1,1
+model_references,base.group_user,access_references_user,references,1,0,0,0
+model_crm_lead_whatsapp,base.group_partner_manager,access_crm_lead_whatsapp_manager,crm.lead.whatsapp,1,1,1,1
+model_crm_lead_whatsapp,base.group_user,access_crm_lead_whatsapp_user,crm.lead.whatsapp,1,0,0,0
+model_activities,base.group_partner_manager,access_activities_manager,activities,1,1,1,1
+model_activities,base.group_user,access_activities_user,activities,1,0,0,0

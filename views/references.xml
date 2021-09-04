@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="references_form_view" model="ir.ui.view">
+            <field name="name">references_form_view</field>
+            <field name="model">references</field>
+            <field name="arch" type="xml">
+                <form string="Referencias">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" required="1"/>
+                            </group>
+                            <group>
+                                <field name="sequence" required="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="references_tree_view" model="ir.ui.view">
+            <field name="name">references_tree_view</field>
+            <field name="model">references</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="references_action" model="ir.actions.act_window">
+            <field name="name">Referencias</field>
+            <field name="res_model">references</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>
